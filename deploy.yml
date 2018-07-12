@@ -1,0 +1,39 @@
+---
+- hosts: ibms2
+  pre_tasks:
+      - name: update apt cache if needed.
+        apt: update_cache=yes cache_valid_time=3600
+  tasks:
+      - name: 安装用于管理apt源工具
+        apt: name={{item}} state=present
+        with_items:
+            - python-apt
+            - python-pycurl
+      - name: 添加php的ondrej源
+        apt_repository: repo='ppa:ondrej/php' update_cache=yes
+      - name: 安装 nginx,mysql,php 以及拓展依赖
+        apt: name={{ item }} state=present
+with_items:
+     git
+     nginx
+     php7.2
+php7.2-cli
+php7.2-common
+php7.2-curl
+php7.2-fpm
+php7.2-gd
+php7.2-intl
+php7.2-json
+php7.2-ldap
+php7.2-mbstring
+php7.2-mysql
+php7.2-opcache
+php7.2-readline
+php7.2-snmp
+php7.2-soap
+php7.2-xml
+php7.2-zip
+python-mysqldb
+mysql-server
+openssl
+libcurl4-openssl-dev
