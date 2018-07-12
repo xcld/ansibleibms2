@@ -9,31 +9,74 @@
         with_items:
             - python-apt
             - python-pycurl
+      - name: 添加用户和组
+        user: name={{ user }} group={{ crazysal }} shell="/bin/bash" state=present
+      - name: Add ansible_user
+        user: name={{ user }} state=present createhome=yes shell="/bin/bash"  group={{ group }} groups={{ansible_groups}}
+        tags:
+           - ansible
+           - user
+       - name: Ensure ansible_user .ssh directory exist
+         file: path=/home/{{ user }}/.ssh state=directory owner={{ user }} group={{ group }} mode=0700
+         tags:
+           - ansible
+           - user
+       - name: Add ansible_user ssh_key
+         template: src=ansible_authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys owner={{ user }} group={{ group }} mode=600
+         tags:
+           - ansible
       - name: 添加php的ondrej源
         apt_repository: repo='ppa:ondrej/php' update_cache=yes
       - name: 安装 nginx,mysql,php 以及拓展依赖
         apt: name={{ item }} state=present
-with_items:
-     git
-     nginx
-     php7.2
-php7.2-cli
-php7.2-common
-php7.2-curl
-php7.2-fpm
-php7.2-gd
-php7.2-intl
-php7.2-json
-php7.2-ldap
-php7.2-mbstring
-php7.2-mysql
-php7.2-opcache
-php7.2-readline
-php7.2-snmp
-php7.2-soap
-php7.2-xml
-php7.2-zip
-python-mysqldb
-mysql-server
-openssl
-libcurl4-openssl-dev
+        with_items:
+             -  git
+             -  nginx
+             -  php7.2
+             -  php7.2-cli
+             -  php7.2-common
+             -  php7.2-curl
+             -  php7.2-fpm
+             -  php7.2-gd
+             -  php7.2-intl
+             -  php7.2-json
+             -  php7.2-ldap
+             -  php7.2-mbstring
+             -  php7.2-mysql
+             -  php7.2-opcache
+             -  php7.2-readline
+             -  php7.2-snmp
+             -  php7.2-soap
+             -  php7.2-xml
+             -  php7.2-zip
+             -  php-redis
+             -  php-pear
+             -  python-mysqldb
+             -  mysql-server
+             -  openssl
+             -  libcurl4-openssl-dev
+             -  redis-server
+      - name: "stop ufw"
+        service: name=ufw state=stopped
+      - name: start nginx,mysql,php
+        service: "name={{ item }} state=started enabled=yes"
+        with_items:
+             - nginx
+             - mysql
+             - php7.2-fpm
+             - redis-server
+      - name : nginx 修改主配置文件
+        template:
+           src: "templates/nginx.conf.j2"
+           dest: "/etc/nginx/nginx.conf"
+           owner: root
+           group: root
+           mode: 0744
+      - name : 在nginx 中为ibms2 添加 virtualhost
+        template:
+           src: "templates/ibmsv2.conf.j2"
+           dest: "/etc/nginx/sites-available/{{ domain }}.conf"
+           owner: root
+           group: root
+           mode: 0744
+notify: restart nginx
