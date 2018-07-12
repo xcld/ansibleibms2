@@ -2,7 +2,7 @@
 server_hostname: ibms2.jiebeili.cn
 user: crazysal
 group: crazysal
-drupal_core_path: "/var/www/Drupal"
+ibms_core_path: "/home/crazysal/ibms-v2/public"
 domain: ibmsv2
 drupal_core_version: "8.6.x"
 drupal_site_name: "MY Drupal"

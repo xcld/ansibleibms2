@@ -9,7 +9,7 @@ server {
         access_log /var/log/nginx/ibms_access.log;
         error_log /var/log/nginx/ibms_error.log info;
 
-        root /home/crazysal/ibms-v2/public;
+        root {{ ibms_core_path }};
         index index.php index.htm index.html;
 
         error_page 497  https://$host:80/$uri?$args;
