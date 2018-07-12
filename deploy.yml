@@ -31,6 +31,7 @@
         apt: name={{ item }} state=present
         with_items:
              -  git
+             -  curl
              -  nginx
              -  php7.2
              -  php7.2-cli
@@ -79,4 +80,19 @@
            owner: root
            group: root
            mode: 0744
-notify: restart nginx
+      notify: restart nginx
+      - name: "配置php"
+        template:
+           src: "templates/php.j2"
+           dest: "/etc/php/7.0/fpm/pool.d/www.conf"
+        notify: restart php7.0-fpm
+      - name: Remove the MySQL test database.
+        mysql_db: db=test state=absent
+      - name: Create a database for Drupal.
+        mysql_db: "db={{ domain }} state=present"
+      - name: "Download composer installer"
+        get_url:
+           url: "https://getcomposer.org/installer"
+           dest: /tmp/composer-installer.php
+           mode: 0755
+

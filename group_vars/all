@@ -3,7 +3,9 @@ server_hostname: ibms2.jiebeili.cn
 user: crazysal
 group: crazysal
 ibms_core_path: "/home/crazysal/ibms-v2/public"
-domain: ibmsv2
+domain: ibms-v2
 drupal_core_version: "8.6.x"
 drupal_site_name: "MY Drupal"
 user_and_group: "www-data"
+
+https://www.cnblogs.com/mhc-fly/p/7082805.html
