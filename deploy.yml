@@ -9,22 +9,22 @@
         with_items:
             - python-apt
             - python-pycurl
-      - name: 添加用户和组
-        user: name={{ user }} group={{ crazysal }} shell="/bin/bash" state=present
-      - name: Add ansible_user
-        user: name={{ user }} state=present createhome=yes shell="/bin/bash"  group={{ group }} groups={{ansible_groups}}
-        tags:
-           - ansible
-           - user
-      - name: Ensure ansible_user .ssh directory exist
-        file: path=/home/{{ user }}/.ssh state=directory owner={{ user }} group={{ group }} mode=0700
-        tags:
-           - ansible
-           - user
-      - name: Add ansible_user ssh_key
-        template: src=ansible_authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys owner={{ user }} group={{ group }} mode=600
-        tags:
-           - ansible
+#      - name: 添加用户和组
+#        user: name={{ user }} group={{ crazysal }} shell="/bin/bash" state=present
+#      - name: Add ansible_user
+#        user: name={{ user }} state=present createhome=yes shell="/bin/bash"  group={{ group }} groups={{ansible_groups}}
+#        tags:
+#           - ansible
+#           - user
+#      - name: Ensure ansible_user .ssh directory exist
+#        file: path=/home/{{ user }}/.ssh state=directory owner={{ user }} group={{ group }} mode=0700
+#        tags:
+#           - ansible
+#           - user
+#      - name: Add ansible_user ssh_key
+#        template: src=ansible_authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys owner={{ user }} group={{ group }} mode=600
+#        tags:
+#           - ansible
       - name: 添加php的ondrej源
         apt_repository: repo='ppa:ondrej/php' update_cache=yes
       - name: 安装 nginx,mysql,php 以及拓展依赖
