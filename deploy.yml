@@ -72,14 +72,14 @@
              - mysql
              - php7.2-fpm
              - redis-server
-      - name : nginx 修改主配置文件
+      - name : "nginx 修改主配置文件"
         template:
            src: "templates/nginx.conf.j2"
            dest: "/etc/nginx/nginx.conf"
            owner: root
            group: root
            mode: 0744
-      - name : 在nginx 中为ibms2 添加 virtualhost
+      - name : "在nginx 中为ibms2 添加 virtualhost"
         template:
            src: "templates/ibmsv2.conf.j2"
            dest: "/etc/nginx/sites-available/{{ domain }}.conf"
@@ -106,7 +106,7 @@
           path: /data/{{ domain }}
           state: directory
           mode: 0755
-      - name: 更改mysql 数据目录
+      - name: "更改mysql 数据目录"
         copy:
           src: /var/lib/mysql
           dest: /data/{{ domain }}/mysql
