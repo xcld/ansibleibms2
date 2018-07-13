@@ -106,13 +106,13 @@
           path: /data/{{ domain }}
           state: directory
           mode: 0755
-      - name: "更改mysql 数据目录"
-        copy:
-          src: /var/lib/mysql
-          dest: /data/{{ domain }}/mysql
-          owner: mysql
-          group: mysql
-          mode: 751
+#      - name: "更改mysql 数据目录"
+#        copy:
+#          src: /var/lib/mysql
+#          dest: /data/{{ domain }}/mysql
+#          owner: mysql
+#          group: mysql
+#          mode: 751
         file:
           dest: /data/{{ domain }}/mysql/ib_logfile*
           state: absent
