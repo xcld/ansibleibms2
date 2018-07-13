@@ -106,34 +106,34 @@
           path: /data/{{ domain }}
           state: directory
           mode: 0755
-      - name: "更改mysql 数据目录"
-        copy:
-          src: /var/lib/mysql
-          dest: /data/{{ domain }}/mysql
-          owner: mysql
-          group: mysql
-          mode: 751
-        file:
-          dest: /data/{{ domain }}/mysql/ib_logfile*
-          state: absent
-      - name: "配置apparmor"
-        template:
-           src: "templates/usr.sbin.mysqld.j2"
-           dest: "/etc/apparmor.d/usr.sbin.mysqld"
-        notify: restart apparmor
-        notify: restart mysql
-      - name: Remove the MySQL test database.
-        mysql_db: db=test state=absent
-      - name: Create a database for {{ domain }}.
-        mysql_db: "db={{ domain }} state=present"
-      - name: create a user.
-#        mysql_user: "name: ibms2 password: '{{ pwd }}' priv: '{{ domain }}:ALL' state: present"
-      - mysql_user:
-        name: ibms2
-        password: '{{ pwd }}'
-        encrypted: yes
-        priv: '{{ domain }}:ALL'
-        state: present
+#      - name: "更改mysql 数据目录"
+#        copy:
+#          src: /var/lib/mysql
+#          dest: /data/{{ domain }}/mysql
+#          owner: mysql
+#          group: mysql
+#          mode: 751
+#        file:
+#          dest: /data/{{ domain }}/mysql/ib_logfile*
+#          state: absent
+#      - name: "配置apparmor"
+#        template:
+#           src: "templates/usr.sbin.mysqld.j2"
+#           dest: "/etc/apparmor.d/usr.sbin.mysqld"
+#        notify: restart apparmor
+#        notify: restart mysql
+#      - name: Remove the MySQL test database.
+#        mysql_db: db=test state=absent
+#      - name: Create a database for {{ domain }}.
+#        mysql_db: "db={{ domain }} state=present"
+#      - name: create a user.
+##        mysql_user: "name: ibms2 password: '{{ pwd }}' priv: '{{ domain }}:ALL' state: present"
+#      - mysql_user:
+#        name: ibms2
+#        password: '{{ pwd }}'
+#        encrypted: yes
+#        priv: '{{ domain }}:ALL'
+#        state: present
       - name: "Download composer installer"
         get_url:
            url: "https://getcomposer.org/installer"
