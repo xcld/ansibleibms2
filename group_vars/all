@@ -4,7 +4,7 @@ user: crazysal
 group: crazysal
 ibms_core_path: "/home/crazysal/ibms-v2/public"
 domain: ibms-v2
-drupal_core_version: "8.6.x"
+pwd: hG@f!B#4UXYMb*@d
 drupal_site_name: "MY Drupal"
 user_and_group: "www-data"
 
