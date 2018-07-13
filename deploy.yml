@@ -62,9 +62,9 @@
         service: name=ufw state=stopped
       - name: create htmlroot dir
         file:
-          path: "{{ ibms_core_path }}"
-          state: directory
-          mode: 0755
+           path: "{{ ibms_core_path }}"
+           state: directory
+           mode: 0755
       - name: start nginx,mysql,php
         service: "name={{ item }} state=started enabled=yes"
         with_items:
