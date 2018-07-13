@@ -84,7 +84,8 @@
            src: "templates/ibmsv2.conf.j2"
            dest: "/etc/nginx/sites-available/{{ domain }}.conf"
            owner: root
-           group: root
+           group: rootls
+
            mode: 0744
         notify: restart nginx
       - name: "配置php pool"
