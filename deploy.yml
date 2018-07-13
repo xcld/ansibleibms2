@@ -96,6 +96,27 @@
            src: "templates/redis.conf.j2"
            dest: "/etc/redis/redis.conf"
         notify: restart redis-server
+      - name: create item dir
+        file:
+          path: /data/{{ domain }}
+          state: directory
+          mode: 0755
+      - name: 更改mysql 数据目录
+        copy:
+          src: /var/lib/mysql
+          dest: /data/{{ domain }}/mysql
+          owner: mysql
+          group: mysql
+          mode: 751
+        file:
+          dest: /data/{{ domain }}/mysql/ib_logfile*
+          state: absent
+      - name: "配置apparmor"
+        template:
+           src: "templates/usr.sbin.mysqld.j2"
+           dest: "/etc/apparmor.d/usr.sbin.mysqld"
+        notify: restart apparmor
+        notify: restart mysql
       - name: Remove the MySQL test database.
         mysql_db: db=test state=absent
       - name: Create a database for {{ domain }}.
@@ -129,3 +150,7 @@
         service: name=php7.2-fpm state=restarted
       - name: restart redis-server
         service: name=redis-server state=restarted
+      - name: restart apparmor
+        service: name=apparmor state=restarted
+      - name: restart mysql
+        service: name=mysql state=restarted
